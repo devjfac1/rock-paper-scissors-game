@@ -1,60 +1,57 @@
 const hand = ['rock', 'paper', 'scissors'];
 
-let humanScore = 0;
+let playerScore = 0;
 let computerScore = 0;
+
+const playerScoreDiv = document.getElementById('player-score');
+const computerScoreDiv = document.getElementById('computer-score');
+const playerChoiceDiv = document.getElementById('player-choice').querySelector('span');
+const computerChoiceDiv = document.getElementById('computer-choice').querySelector('span');
+const feedbackDiv = document.getElementById('feedback');
 
 function getComputerChoice() {
     const randomIndex = Math.floor(Math.random() * 3);
     return hand[randomIndex];
 }
 
-function getHumanChoice() {
-    let humanChoice = parseInt(prompt("Please select your choice: 0 for rock, 1 for paper, or 2 for scissors:"), 10);
-    while (isNaN(humanChoice) || humanChoice < 0 || humanChoice > 2) {
-        humanChoice = parseInt(prompt("Invalid choice! Please select your choice: 0 for rock, 1 for paper, or 2 for scissors:"), 10);
-    }
-    return hand[humanChoice];
-}
-
-function playRound(humanChoice, computerChoice) {
-    if (humanChoice === computerChoice) {
+function playRound(playerChoice, computerChoice) {
+    if (playerChoice === computerChoice) {
         return "It's a tie!";
     }
-    
+
     if (
-        (humanChoice === 'rock' && computerChoice === 'scissors') ||
-        (humanChoice === 'paper' && computerChoice === 'rock') ||
-        (humanChoice === 'scissors' && computerChoice === 'paper')
+        (playerChoice === 'rock' && computerChoice === 'scissors') ||
+        (playerChoice === 'paper' && computerChoice === 'rock') ||
+        (playerChoice === 'scissors' && computerChoice === 'paper')
     ) {
-        humanScore++;
-        return `You win! ${humanChoice} beats ${computerChoice}`;
+        playerScore++;
+        return `You win! ${playerChoice} beats ${computerChoice}`;
     } else {
         computerScore++;
-        return `You lose! ${computerChoice} beats ${humanChoice}`;
+        return `You lose! ${computerChoice} beats ${playerChoice}`;
     }
 }
 
-function playGame() {
-    humanScore = 0;
-    computerScore = 0;
-    
-    for (let i = 0; i < 3; i++) {
-        const human = getHumanChoice();
-        const computer = getComputerChoice();
-        const result = playRound(human, computer);
-        alert(result);
-        document.write(`<p>Round ${i + 1}: ${result}</p>`);
-    }
-    
-    let finalResult;
-    if (humanScore > computerScore) {
-        finalResult = "You win the game!";
-    } else if (computerScore > humanScore) {
-        finalResult = "You lose the game!";
-    } else {
-        finalResult = "The game is a tie!";
-    }
-    
-    alert(finalResult);
-    document.write(`<h2>${finalResult}</h2>`);
-}
+document.querySelectorAll('#controls button').forEach(button => {
+    button.addEventListener('click', () => {
+        try {
+            const playerChoice = button.getAttribute('data-choice');
+            if (!hand.includes(playerChoice)) {
+                throw new Error("Invalid choice detected.");
+            }
+
+            const computerChoice = getComputerChoice();
+
+            playerChoiceDiv.textContent = playerChoice;
+            computerChoiceDiv.textContent = computerChoice;
+
+            const result = playRound(playerChoice, computerChoice);
+            feedbackDiv.textContent = result;
+
+            playerScoreDiv.textContent = `Player: ${playerScore}`;
+            computerScoreDiv.textContent = `Computer: ${computerScore}`;
+        } catch (error) {
+            feedbackDiv.textContent = `Error: ${error.message}`;
+        }
+    });
+});
