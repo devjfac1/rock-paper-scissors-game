@@ -9,9 +9,9 @@ function getComputerChoice() {
 }
 
 function getHumanChoice() {
-    let humanChoice = parseInt(prompt("Enter 0 for rock, 1 for paper, or 2 for scissors:"), 10);
+    let humanChoice = parseInt(prompt("Please select your choice: 0 for rock, 1 for paper, or 2 for scissors:"), 10);
     while (isNaN(humanChoice) || humanChoice < 0 || humanChoice > 2) {
-        humanChoice = parseInt(prompt("Invalid choice! Enter 0 for rock, 1 for paper, or 2 for scissors:"), 10);
+        humanChoice = parseInt(prompt("Invalid choice! Please select your choice: 0 for rock, 1 for paper, or 2 for scissors:"), 10);
     }
     return hand[humanChoice];
 }
