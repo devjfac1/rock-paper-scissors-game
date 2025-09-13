@@ -9,16 +9,14 @@ function getComputerChoice() {
 }
 
 function getHumanChoice() {
-    let humanChoice = prompt("Enter rock, paper, or scissors:").toLowerCase();
-    while (!hand.includes(humanChoice)) {
-        humanChoice = prompt("Invalid choice! Enter rock, paper, or scissors:").toLowerCase();
+    let humanChoice = parseInt(prompt("Enter 0 for rock, 1 for paper, or 2 for scissors:"), 10);
+    while (isNaN(humanChoice) || humanChoice < 0 || humanChoice > 2) {
+        humanChoice = parseInt(prompt("Invalid choice! Enter 0 for rock, 1 for paper, or 2 for scissors:"), 10);
     }
-    return humanChoice;
+    return hand[humanChoice];
 }
 
 function playRound(humanChoice, computerChoice) {
-    humanChoice = humanChoice.toLowerCase();
-    
     if (humanChoice === computerChoice) {
         return "It's a tie!";
     }
@@ -43,14 +41,20 @@ function playGame() {
     for (let i = 0; i < 3; i++) {
         const human = getHumanChoice();
         const computer = getComputerChoice();
-        console.log(playRound(human, computer));
+        const result = playRound(human, computer);
+        alert(result);
+        document.write(`<p>Round ${i + 1}: ${result}</p>`);
     }
     
+    let finalResult;
     if (humanScore > computerScore) {
-        return "You win the game!";
+        finalResult = "You win the game!";
     } else if (computerScore > humanScore) {
-        return "You lose the game!";
+        finalResult = "You lose the game!";
     } else {
-        return "The game is a tie!";
+        finalResult = "The game is a tie!";
     }
+    
+    alert(finalResult);
+    document.write(`<h2>${finalResult}</h2>`);
 }
